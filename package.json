@@ -2,7 +2,7 @@
   "name": "roe-challenges",
   "version": "0.1.0",
   "scripts": {
-      "start": "webpack"
+    "start": "webpack"
   },
   "devDependencies": {
     "awesome-typescript-loader": "^5.2.1",
