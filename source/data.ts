@@ -1,15 +1,7 @@
+import { Pack, Weapon } from 'types';
 
-export const packs = [
-  'GLIDER',
-  'SKI',
-  'CLIMB',
-];
-
-export const starterWeapons = {
-	'GLIDER': 'GLOCK',
-  'SKI': 'USP',
-  'CLIMB': 'CITORI',
-};
+const packFrom = (name: string, weapon: Weapon): Pack => ({ name, weapon });
+const weaponFrom = (name: string, crate: boolean = false): Weapon => ({ name, crate });
 
 export const smgs = [
   'MPX',
@@ -43,4 +35,10 @@ export const snipers = [
   'MSR',
   'MOSIN',
   'VKS',
+];
+
+export const packs: Pack[] = [
+  packFrom('GLIDER', weaponFrom('GLOCK')),
+  packFrom('SKI', weaponFrom('USP')),
+  packFrom('CLIMB', weaponFrom('CITORI')),
 ];

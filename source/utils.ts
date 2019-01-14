@@ -1,6 +1,6 @@
-export const randInt = (low, high) => Math.round(Math.random() * (high - low) + low);
+export const randInt = (low: number, high: number): number => Math.round(Math.random() * (high - low) + low);
 
-export const randEntry = (list) => {
+export const randEntry = <T>(list: T[]): T => {
   const i = randInt(0, list.length - 1);
   return list[i];
 };

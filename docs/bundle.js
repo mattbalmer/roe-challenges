@@ -104,7 +104,6 @@ exports.newID = () => {
 };
 exports.random = () => {
     const pack = utils_1.randEntry(data_1.packs);
-    const starterWeapon = data_1.starterWeapons[pack];
     const randWeapons = utils_1.randSubset([
         ...utils_1.randSubset(data_1.pistols, 0, 1),
         ...utils_1.randSubset(data_1.shotguns, 1, 2),
@@ -112,10 +111,10 @@ exports.random = () => {
         ...utils_1.randSubset(data_1.ars, 1, 2),
         ...utils_1.randSubset(data_1.snipers, 1, 2),
     ], 2, 4);
-    const weapons = [starterWeapon, ...randWeapons];
+    const weapons = [pack.weapon.name, ...randWeapons];
     return { pack, weapons };
 };
-exports.stringify = (output) => `${output.pack} pack, using only: ${output.weapons.join(', ')}`;
+exports.stringify = (output) => `${output.pack.name} pack, using only: ${output.weapons.join(', ')}`;
 
 
 /***/ }),
@@ -130,16 +129,8 @@ exports.stringify = (output) => `${output.pack} pack, using only: ${output.weapo
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.packs = [
-    'GLIDER',
-    'SKI',
-    'CLIMB',
-];
-exports.starterWeapons = {
-    'GLIDER': 'GLOCK',
-    'SKI': 'USP',
-    'CLIMB': 'CITORI',
-};
+const packFrom = (name, weapon) => ({ name, weapon });
+const weaponFrom = (name, crate = false) => ({ name, crate });
 exports.smgs = [
     'MPX',
     'MP5',
@@ -168,6 +159,11 @@ exports.snipers = [
     'MSR',
     'MOSIN',
     'VKS',
+];
+exports.packs = [
+    packFrom('GLIDER', weaponFrom('GLOCK')),
+    packFrom('SKI', weaponFrom('USP')),
+    packFrom('CLIMB', weaponFrom('CITORI')),
 ];
 
 
