@@ -1,19 +1,25 @@
+import { Challenge, Weapon } from 'types';
 import {
   newID,
-  random,
-  stringify,
+  generate,
 } from 'challenges';
 
-const button = document.querySelector('#generate');
-const output = document.querySelector('#output');
+const buttonEl = document.querySelector('#generate');
+const outputEl = document.querySelector('#output');
 
-const generateLI = (result) => {
-  const id = newID();
-  return `<li>#${id}: ${stringify(result)}</li>`;
-}
+const renderWeapon = (weapon: Weapon): string => {
+  return `<span class="weapon-ammo-${weapon.ammo} weapon-type-${weapon.type.toLowerCase()}">${weapon.name}</span>`;
+};
 
-button.addEventListener('click', (e) => {
+const renderEntry = (challenge: Challenge): string => {
+  const id = `<span class="id">#${newID()}:</span>`;
+  const pack = `<span class="pack pack-type-${challenge.pack.name.toLowerCase()}"></span>`;
+  const weapons = challenge.weapons.map(renderWeapon).join(', ');
+  return `<li class="entry">${pack} ${weapons}</li>`;
+};
+
+buttonEl.addEventListener('click', (e) => {
   e.preventDefault();
-  const result = random();
-  output.innerHTML = `${generateLI(result)}${output.innerHTML}`;
+  const challenge: Challenge = generate();
+  outputEl.innerHTML = `${renderEntry(challenge)}${outputEl.innerHTML}`;
 });

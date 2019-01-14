@@ -102,19 +102,14 @@ let id = 0;
 exports.newID = () => {
     return ++id;
 };
-exports.random = () => {
-    const pack = utils_1.randEntry(data_1.packs);
-    const randWeapons = utils_1.randSubset([
-        ...utils_1.randSubset(data_1.pistols, 0, 1),
-        ...utils_1.randSubset(data_1.shotguns, 1, 2),
-        ...utils_1.randSubset(data_1.smgs, 1, 2),
-        ...utils_1.randSubset(data_1.ars, 1, 2),
-        ...utils_1.randSubset(data_1.snipers, 1, 2),
-    ], 2, 4);
-    const weapons = [pack.weapon.name, ...randWeapons];
-    return { pack, weapons };
+exports.generate = () => {
+    const pack = utils_1.randValue(data_1.packs);
+    const randWeapons = utils_1.randSubmap(Object.assign({}, utils_1.randSubmap(data_1.pistols, 0, 1), utils_1.randSubmap(data_1.shotguns, 1, 2), utils_1.randSubmap(data_1.smgs, 1, 2), utils_1.randSubmap(data_1.ars, 1, 2), utils_1.randSubmap(data_1.snipers, 1, 2)), 2, 4);
+    return {
+        pack: pack,
+        weapons: [pack.weapon, ...Object.values(randWeapons)],
+    };
 };
-exports.stringify = (output) => `${output.pack.name} pack, using only: ${output.weapons.join(', ')}`;
 
 
 /***/ }),
@@ -129,42 +124,44 @@ exports.stringify = (output) => `${output.pack.name} pack, using only: ${output.
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const packFrom = (name, weapon) => ({ name, weapon });
-const weaponFrom = (name, crate = false) => ({ name, crate });
-exports.smgs = [
-    'MPX',
-    'MP5',
-    'VECTOR',
-];
-exports.shotguns = [
-    'REMINGTON SHOTGUN',
-    'ORIGIN',
-];
-exports.pistols = [
-    'DEAGLE',
-];
-exports.ars = [
-    'M4',
-    'LVOAC',
-    'AK',
-    'GROZA',
-    'FAMAS',
-    'AUG',
-];
-exports.snipers = [
-    'G28',
-    'MK12',
-    'M200',
-    'REMINGTON SNIPER',
-    'MSR',
-    'MOSIN',
-    'VKS',
-];
-exports.packs = [
-    packFrom('GLIDER', weaponFrom('GLOCK')),
-    packFrom('SKI', weaponFrom('USP')),
-    packFrom('CLIMB', weaponFrom('CITORI')),
-];
+const types_1 = __webpack_require__(/*! types */ "./source/types.ts");
+const _ = {
+    pack: (name, weapon) => ({ name, weapon }),
+    weapon: (name, type, ammo, crate = false) => ({ name, type, ammo, crate }),
+};
+exports.smgs = {
+    'MPX': _.weapon('MPX', types_1.WeaponType.SMG, types_1.Ammo._9),
+    'MP5': _.weapon('MP5', types_1.WeaponType.SMG, types_1.Ammo._9),
+    'VECTOR': _.weapon('VECTOR', types_1.WeaponType.SMG, types_1.Ammo._45),
+};
+exports.shotguns = {
+    'REMINGTON 870': _.weapon('REMINGTON 870', types_1.WeaponType.SHOTGUN, types_1.Ammo._12),
+    'ORIGIN': _.weapon('ORIGIN', types_1.WeaponType.SHOTGUN, types_1.Ammo._12),
+};
+exports.pistols = {
+    'DEAGLE': _.weapon('DEAGLE', types_1.WeaponType.PISTOL, types_1.Ammo._50),
+};
+exports.ars = {
+    'M4': _.weapon('M4', types_1.WeaponType.AR, types_1.Ammo._556),
+    'LVOAC': _.weapon('LVOAC', types_1.WeaponType.AR, types_1.Ammo._556),
+    'FAMAS': _.weapon('FAMAS', types_1.WeaponType.AR, types_1.Ammo._556),
+    'AK': _.weapon('AK', types_1.WeaponType.AR, types_1.Ammo._762),
+    'GROZA': _.weapon('GROZA', types_1.WeaponType.AR, types_1.Ammo._762),
+    'AUG': _.weapon('AUG', types_1.WeaponType.AR, types_1.Ammo._556, true),
+};
+exports.snipers = {
+    'G28': _.weapon('G28', types_1.WeaponType.SNIPER, types_1.Ammo._762),
+    'MK12': _.weapon('MK12', types_1.WeaponType.SNIPER, types_1.Ammo._556),
+    'REMINGTON 700': _.weapon('REMINGTON 700', types_1.WeaponType.SNIPER, types_1.Ammo._556),
+    'MOSIN': _.weapon('MOSIN', types_1.WeaponType.SNIPER, types_1.Ammo._762),
+    'M200': _.weapon('M200', types_1.WeaponType.SNIPER, types_1.Ammo._408, true),
+    'VKS': _.weapon('VKS', types_1.WeaponType.SNIPER, types_1.Ammo._50, true),
+};
+exports.packs = {
+    GLIDER: _.pack('GLIDER', _.weapon('GLOCK', types_1.WeaponType.PISTOL, types_1.Ammo._9)),
+    SKI: _.pack('SKI', _.weapon('USP', types_1.WeaponType.PISTOL, types_1.Ammo._45)),
+    CLIMB: _.pack('CLIMB', _.weapon('CITORI', types_1.WeaponType.SHOTGUN, types_1.Ammo._12)),
+};
 
 
 /***/ }),
@@ -180,17 +177,54 @@ exports.packs = [
 
 Object.defineProperty(exports, "__esModule", { value: true });
 const challenges_1 = __webpack_require__(/*! challenges */ "./source/challenges.ts");
-const button = document.querySelector('#generate');
-const output = document.querySelector('#output');
-const generateLI = (result) => {
-    const id = challenges_1.newID();
-    return `<li>#${id}: ${challenges_1.stringify(result)}</li>`;
+const buttonEl = document.querySelector('#generate');
+const outputEl = document.querySelector('#output');
+const renderWeapon = (weapon) => {
+    return `<span class="weapon-ammo-${weapon.ammo} weapon-type-${weapon.type.toLowerCase()}">${weapon.name}</span>`;
 };
-button.addEventListener('click', (e) => {
+const renderEntry = (challenge) => {
+    const id = `<span class="id">#${challenges_1.newID()}:</span>`;
+    const pack = `<span class="pack pack-type-${challenge.pack.name.toLowerCase()}"></span>`;
+    const weapons = challenge.weapons.map(renderWeapon).join(', ');
+    return `<li class="entry">${pack} ${weapons}</li>`;
+};
+buttonEl.addEventListener('click', (e) => {
     e.preventDefault();
-    const result = challenges_1.random();
-    output.innerHTML = `${generateLI(result)}${output.innerHTML}`;
+    const challenge = challenges_1.generate();
+    outputEl.innerHTML = `${renderEntry(challenge)}${outputEl.innerHTML}`;
 });
+
+
+/***/ }),
+
+/***/ "./source/types.ts":
+/*!*************************!*\
+  !*** ./source/types.ts ***!
+  \*************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Ammo;
+(function (Ammo) {
+    Ammo["_9"] = "9";
+    Ammo["_12"] = "12";
+    Ammo["_45"] = "45";
+    Ammo["_50"] = "50";
+    Ammo["_556"] = "556";
+    Ammo["_762"] = "762";
+    Ammo["_408"] = "408";
+})(Ammo = exports.Ammo || (exports.Ammo = {}));
+var WeaponType;
+(function (WeaponType) {
+    WeaponType["PISTOL"] = "PISTOL";
+    WeaponType["SHOTGUN"] = "SHOTGUN";
+    WeaponType["SMG"] = "SMG";
+    WeaponType["AR"] = "AR";
+    WeaponType["SNIPER"] = "SNIPER";
+})(WeaponType = exports.WeaponType || (exports.WeaponType = {}));
 
 
 /***/ }),
@@ -205,7 +239,7 @@ button.addEventListener('click', (e) => {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.randInt = (low, high) => Math.round(Math.random() * (high - low) + low);
+exports.randInt = (low, high) => Math.floor(Math.random() * (1 + high - low) + low);
 exports.randEntry = (list) => {
     const i = exports.randInt(0, list.length - 1);
     return list[i];
@@ -224,6 +258,30 @@ exports.randSubset = function (list, min, max) {
         const rand = exports.randInt(0, from.length - 1);
         const e = from.splice(rand, 1)[0];
         sub.push(e);
+    }
+    return sub;
+};
+exports.randValue = (map) => {
+    const keys = Object.keys(map);
+    const i = exports.randInt(0, keys.length - 1);
+    const key = keys[i];
+    return map[key];
+};
+exports.randSubmap = function (map, min, max) {
+    const keys = Object.keys(map);
+    if (arguments.length === 2) {
+        max = min;
+    }
+    if (arguments.length === 1) {
+        min = max = exports.randInt(0, keys.length - 1);
+    }
+    const length = exports.randInt(min, max);
+    const from = keys.slice(0);
+    const sub = {};
+    for (let i = 0; i < length; i++) {
+        const rand = exports.randInt(0, from.length - 1);
+        const key = from.splice(rand, 1)[0];
+        sub[key] = map[key];
     }
     return sub;
 };

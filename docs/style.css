@@ -1,7 +1,68 @@
 body {
     font-family: Calibri, Arial, sans-serif;
+    font-size: 12px;
 }
 
 #output {
     list-style: none;
+}
+
+.entry {
+    font-size: 12px;
+    margin-bottom: .25rem;
+    line-height: 1;
+}
+
+.entry:first-child {
+    font-size: 16px;
+    margin-bottom: 1rem;
+}
+.entry:first-child .pack {
+    width: 1em;
+    height: 1em;
+}
+
+.id {
+    display: inline-block;
+    width: 38px;
+    text-align: right;
+    margin-right: .5rem;
+}
+
+.pack {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    background-size: 100% 100%;
+    vertical-align: middle;
+    margin-right: 0.5em;
+}
+
+.pack-type-glider {
+    color: #3e59ff;
+    background-image: url('glider.png');
+}
+.pack-type-ski {
+    color: green;
+    background-image: url('snowboard.png');
+}
+.pack-type-climb {
+    color: #c3c308;
+    background-image: url('climb.png');
+}
+
+.weapon-ammo-9 {
+    color: orange;
+}
+.weapon-ammo-45 {
+    color: #3e59ff;
+}
+.weapon-ammo-556 {
+    color: green;
+}
+.weapon-ammo-762 {
+    color: #c3c308;
+}
+.weapon-ammo-12 {
+    color: #7b6033;
 }
