@@ -28,6 +28,6 @@ export const random = () => {
     const weapons = [starterWeapon, ...randWeapons];
     return { pack, weapons };
 };
-  
+
 export const stringify = (output) => `${output.pack} pack, using only: ${output.weapons.join(', ')}`;
 
