@@ -281,7 +281,7 @@ const renderWeapon = (weapon) => {
 const renderEntry = (challenge) => {
     const id = `<span class="id">#${challenges_1.newID()}:</span>`;
     const map = `<span class="map map-${challenge.map.toLowerCase()}">[${challenge.map}]</span>`;
-    const pack = `<span class="pack pack-type-${challenge.pack.className}"></span>`;
+    const pack = `<span class="pack pack-type-${challenge.pack.className}">${challenge.pack.name} |</span>`;
     const weapons = challenge.weapons.map(renderWeapon).join(', ');
     return `<li class="entry">${map} ${pack} ${weapons}</li>`;
 };

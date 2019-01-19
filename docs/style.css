@@ -18,8 +18,8 @@ body {
     margin-bottom: 1rem;
 }
 .entry:first-child .pack {
-    width: 1em;
-    height: 1em;
+    width: 16px;
+    height: 16px;
 }
 
 .id {
@@ -31,11 +31,14 @@ body {
 
 .pack {
     display: inline-block;
-    width: 1em;
-    height: 1em;
+    width: 12px;
+    height: 12px;
     background-size: 100% 100%;
     vertical-align: middle;
     margin: 0 0.5em;
+    color: transparent;
+    line-height: 1;
+    font-size: 0;
 }
 
 .pack-type-glider {
