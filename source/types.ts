@@ -4,6 +4,7 @@ export type StringMap<T> = {
 
 export type Pack = {
   name: string;
+  className: string;
   weapon: Weapon;
 };
 
@@ -21,6 +22,7 @@ export enum WeaponType {
   PISTOL = 'PISTOL',
   SHOTGUN = 'SHOTGUN',
   SMG = 'SMG',
+  LMG = 'LMG',
   AR = 'AR',
   SNIPER = 'SNIPER',
 }
@@ -33,6 +35,12 @@ export type Weapon = {
 };
 
 export type Challenge = {
+  map: string;
   pack: Pack;
   weapons: Weapon[];
+};
+
+export type GameMap = {
+  name: string;
+  data: any;
 };

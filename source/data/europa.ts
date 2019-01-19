@@ -1,7 +1,7 @@
 import { Ammo, Pack, Weapon, WeaponType } from 'types';
 
 const _ = {
-  pack: (name: string, weapon: Weapon): Pack => ({ name, weapon }),
+  pack: (name: string, className: string, weapon: Weapon): Pack => ({ name, className, weapon }),
   weapon: (name: string, type: WeaponType, ammo: Ammo, crate: boolean = false): Weapon => ({ name, type, ammo, crate }),
 };
 
@@ -18,6 +18,11 @@ export const shotguns = {
 
 export const pistols = {
   'DEAGLE': _.weapon('DEAGLE', WeaponType.PISTOL, Ammo._50),
+};
+
+export const lmgs = {
+  'PKM': _.weapon('PKM', WeaponType.LMG, Ammo._762),
+  'MG4': _.weapon('MG4', WeaponType.LMG, Ammo._556, true),
 };
 
 export const ars = {
@@ -39,7 +44,7 @@ export const snipers = {
 };
 
 export const packs = {
-  GLIDER: _.pack('GLIDER', _.weapon('GLOCK', WeaponType.PISTOL, Ammo._9)),
-  SKI: _.pack('SKI', _.weapon('USP', WeaponType.PISTOL, Ammo._45)),
-  CLIMB: _.pack('CLIMB', _.weapon('CITORI', WeaponType.SHOTGUN, Ammo._12)),
+  GLIDER: _.pack('GLIDER', 'europa-glider', _.weapon('GLOCK', WeaponType.PISTOL, Ammo._9)),
+  BMX: _.pack('BMX', 'bmx', _.weapon('USP', WeaponType.PISTOL, Ammo._45)),
+  GRAPPLE: _.pack('GRAPPLE', 'grapple', _.weapon('CITORI', WeaponType.SHOTGUN, Ammo._12)),
 };

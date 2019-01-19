@@ -35,7 +35,7 @@ export const randValue = <T>(map: StringMap<T>): T => {
   return map[key];
 };
 
-export const randSubmap = function <T>(map: StringMap<T>, min?: number, max?: number) {
+export const randSubmap = function <T>(map: StringMap<T> = {}, min?: number, max?: number) {
   const keys = Object.keys(map);
   if(arguments.length === 2) {
     max = min;
@@ -44,7 +44,7 @@ export const randSubmap = function <T>(map: StringMap<T>, min?: number, max?: nu
     min = max = randInt(0, keys.length - 1);
   }
 
-  const length = randInt(min, max);
+  const length = Math.min(keys.length, randInt(min, max));
   const from = keys.slice(0);
   const sub = {};
 

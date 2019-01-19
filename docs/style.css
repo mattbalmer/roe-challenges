@@ -35,7 +35,7 @@ body {
     height: 1em;
     background-size: 100% 100%;
     vertical-align: middle;
-    margin-right: 0.5em;
+    margin: 0 0.5em;
 }
 
 .pack-type-glider {
@@ -49,6 +49,22 @@ body {
 .pack-type-climb {
     color: #c3c308;
     background-image: url('climb.png');
+}
+.pack-type-europa-glider {
+    color: #3e59ff;
+    background-image: url('europa-glider.png');
+}
+.pack-type-bmx {
+    color: green;
+    background-image: url('bmx.png');
+}
+.pack-type-grapple {
+    color: #c3c308;
+    background-image: url('grapple.png');
+}
+
+.weapon-crate {
+    font-weight: bold;
 }
 
 .weapon-ammo-9 {
